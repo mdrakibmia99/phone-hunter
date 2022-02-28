@@ -14,19 +14,28 @@
 </head>
 <body>
     
+<header class="custom-bg py-5"> >
+    <h4 class="text-center"> Search Your favorite Phone</h4> 
+    <div class="input-group mb-3 w-50 mx-auto">
+        
+        <input id="search-input" type="text" class="form-control" placeholder="Search the Phone" aria-label="Search the Phone" aria-describedby="button-addon2">
+        <button onclick="searchPhone()" class="btn btn-primary rounded-end" type="button" id="search-btn">Search</button>
 
+      </div>
+      
+</header>
 
 <section class="container">
-    <div class="input-group mb-3 w-50 mx-auto">
-        <input id="search-input" type="text" class="form-control" placeholder="Search the Phone" aria-label="Search the Phone" aria-describedby="button-addon2">
-        <button onclick="searchPhone()" class="btn btn-outline-secondary" type="button" id="search-btn">Search</button>
-      </div>
-
+    <!--if phone list length 0 then show this messeage  -->
+    <div class="d-block ">
+        <h2 id="phone_not_avabile" class="text-warning text-center"></h2>
+    </div>
       <!-- search Phone infomatin after clicking  -->
- <div id="phoneDetails" class="container w-50 mx-auto">
+ <div id="phoneDetails" class="py-4 w-25 mx-auto">
    
  </div>
- <div id="card-area" class=" container row row-cols-1 row-cols-md-3 g-4 mx-auto">
+ <!-- card information -->
+ <div id="card-area" class="py-4  row row-cols-1 row-cols-md-3 g-4 mx-auto">
     
 </div>
 

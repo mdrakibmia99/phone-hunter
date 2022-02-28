@@ -1,26 +1,41 @@
+// get for Phnone name using serach
 const searchPhone=()=>{
     const searchField= document.getElementById("search-input");
     const searchText=searchField.value;
     searchField.value="";
-    const url=`https://openapi.programming-hero.com/api/phones?search=${searchText}`
-    console.log(url);
-    fetch(url)
-    .then(response=>response.json())
-    .then(data=>displayPhoneResult(data.data));
+    document.getElementById("phoneDetails").textContent="";
+    if(searchField.value==""){
+      document.getElementById("phone_not_avabile").innerText="Result Not Founded!!";
+    };
+    
+      const url=`https://openapi.programming-hero.com/api/phones?search=${searchText}`
+      fetch(url)
+      .then(response=>response.json())
+      .then(data=>displayPhoneResult(data.data));
+    
+    
 };
-
+// display all phones
 const displayPhoneResult=(phones)=>{
-    const cardId=document.getElementById("card-area");
+  console.log(phones,"all phone list");
+  const cardId=document.getElementById("card-area");
+  const PhoneNotAvaileId=document.getElementById("phone_not_avabile");
+  PhoneNotAvaileId.textContent="";
+  cardId.textContent="";
+  
+  if(phones.length===0){
+    PhoneNotAvaileId .innerText="Result Not Founded!!";
+  }
+   
 phones.forEach((phone)=>{  
-    console.log(phone); 
     const div=document.createElement("div");
     div.innerHTML=`
-    <div class="col" onClick="PhoneInfomation('${phone.slug}')">
+    <div class="col w-50 mx-auto" onClick="PhoneInfomation('${phone.slug}')">
       <div class="card">
         <img src="${phone.image}" class="card-img-top" alt="...">
         <div class="card-body">
-          <h5 class="card-title">${phone.phone_name}</h5>
-          <p class="card-text">${phone.brand.slice(0,20)}</p>
+          <h5 class="card-title fw-bold">${phone.phone_name}</h5>
+          <p class="card-text">Brand:${phone.brand}</p>
         </div>
       </div>
     </div>
@@ -30,30 +45,31 @@ phones.forEach((phone)=>{
 });
 
 };
+// phone information api get by phone Id
 const PhoneInfomation=(id)=>{
   const url=`https://openapi.programming-hero.com/api/phone/${id}`;
-  console.log(url);
   fetch(url)
   .then(response=>response.json())
   .then(data=> displayPhoneDetails(data.data));
 };
-
+// for display phone full informaiton
 const displayPhoneDetails=(phone)=>{
-  console.log(phone.mainFeatures,"hasibul");
+  console.log(phone,"hasibul");
     
   const cardId=document.getElementById("phoneDetails");
   cardId.textContent="";
   const div=document.createElement("div");
 
 div.innerHTML=`
-<div class="card" style="width: 18rem;">
-<img src="${phone.image}" class="card-img-top" alt="...">
+<div class="card w-100">
+<img src="${phone.image}" class="card-img-top w-50 mx-auto" alt="...">
 <div class="card-body">
-<h5 class="card-title">${phone.name}</h5>
-<p class="card-text">${phone.name}</p>
+<h5 class="card-title fw-bold">${phone.name}</h5>
+<p class="card-text"> ${phone.releaseDate}</p>
+<p class="card-text">Brand:${phone.brand}</p>
 
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Launch demo modal
+    More Details..
   </button>
   
   <!-- Modal -->
