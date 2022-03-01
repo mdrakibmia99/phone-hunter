@@ -1,67 +1,89 @@
 // get for Phnone name using serach
-const searchPhone=()=>{
-    const searchField= document.getElementById("search-input");
-    const searchText=searchField.value;
-    searchField.value="";
-    document.getElementById("phoneDetails").textContent="";
-    if(searchField.value==""){
-      document.getElementById("phone_not_avabile").innerText="Result Not Founded!!";
-    };
-    
-      const url=`https://openapi.programming-hero.com/api/phones?search=${searchText}`
-      fetch(url)
-      .then(response=>response.json())
-      .then(data=>displayPhoneResult(data.data));
-    
-    
+const searchPhone = () => {
+  const searchField = document.getElementById("search-input");
+  const searchText = searchField.value;
+  searchField.value = "";
+  document.getElementById("phoneDetails").textContent = "";
+
+  // spin start
+  const bookLoading = document.getElementById("spinner");
+  bookLoading.innerHTML = `
+      <div class="spinner-border text-info m-auto" role="status">
+          <span class="visually-hidden">Loading...</span>
+      </div>
+    `;
+
+  const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`;
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+      displayPhoneResult(
+        data.data,
+        data.data.length,
+        data.data.slice(0, 20),
+        searchText
+      );
+    });
 };
 // display all phones
-const displayPhoneResult=(phones)=>{
-  console.log(phones,"all phone list");
-  const cardId=document.getElementById("card-area");
-  const PhoneNotAvaileId=document.getElementById("phone_not_avabile");
-  PhoneNotAvaileId.textContent="";
-  cardId.textContent="";
-  
-  if(phones.length===0){
-    PhoneNotAvaileId .innerText="Result Not Founded!!";
-  }
-   
-phones.forEach((phone)=>{  
-    const div=document.createElement("div");
-    div.innerHTML=`
-    <div class="col w-50 mx-auto" onClick="PhoneInfomation('${phone.slug}')">
-      <div class="card">
-        <img src="${phone.image}" class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title fw-bold">${phone.phone_name}</h5>
-          <p class="card-text">Brand:${phone.brand}</p>
+const displayPhoneResult = (phones, totalPhone, customlength, searchText) => {
+  if (searchText == "") {
+    // spiner off
+    const showTitle = document.getElementById("spinner");
+    showTitle.innerHTML = "";
+    document.getElementById("phone_not_avabile").innerText =
+      "Please enter a phone name!!";
+  } else {
+    document.getElementById("showing").innerHTML = `
+  <div class="text-center text-success">
+    <span class="fw-bold">Total Phone Found:</span> ${totalPhone},
+    <span class="fw-bold">Showing Results:</span> ${customlength.length}
+  </div>`;
+
+    const cardId = document.getElementById("card-area");
+    const PhoneNotAvaileId = document.getElementById("phone_not_avabile");
+    PhoneNotAvaileId.textContent = "";
+    cardId.textContent = "";
+
+    if (phones.length === 0) {
+      PhoneNotAvaileId.innerText = "Result Not Founded!!";
+    } else {
+      customlength.forEach((phone) => {
+        const div = document.createElement("div");
+        div.innerHTML = `
+      <div class="col " onClick="PhoneInfomation('${phone.slug}')">
+        <div class="card ">
+          <img src="${phone.image}" class="card-img-top w-75 mx-auto" alt="...">
+          <div class="card-body text-center">
+            <h5 class="card-title fw-bold">${phone.phone_name}</h5>
+            <p class="card-text">Brand:${phone.brand}</p>
+          </div>
         </div>
       </div>
-    </div>
-    `;
-    cardId.appendChild(div);
-
-});
-
+      `;
+        cardId.appendChild(div);
+      });
+    }
+    // spiner off
+    const showTitle = document.getElementById("spinner");
+    showTitle.innerHTML = "";
+  }
 };
 // phone information api get by phone Id
-const PhoneInfomation=(id)=>{
-  const url=`https://openapi.programming-hero.com/api/phone/${id}`;
+const PhoneInfomation = (id) => {
+  const url = `https://openapi.programming-hero.com/api/phone/${id}`;
   fetch(url)
-  .then(response=>response.json())
-  .then(data=> displayPhoneDetails(data.data));
+    .then((response) => response.json())
+    .then((data) => displayPhoneDetails(data.data));
 };
 // for display phone full informaiton
-const displayPhoneDetails=(phone)=>{
-  console.log(phone,"hasibul");
-    
-  const cardId=document.getElementById("phoneDetails");
-  cardId.textContent="";
-  const div=document.createElement("div");
+const displayPhoneDetails = (phone) => {
+  const cardId = document.getElementById("phoneDetails");
+  cardId.textContent = "";
+  const div = document.createElement("div");
 
-div.innerHTML=`
-<div class="card w-100">
+  div.innerHTML = `
+<div class="card ">
 <img src="${phone.image}" class="card-img-top w-50 mx-auto" alt="...">
 <div class="card-body">
 <h5 class="card-title fw-bold">${phone.name}</h5>
@@ -99,6 +121,5 @@ div.innerHTML=`
 
 </div>
 </div>`;
-cardId.appendChild(div);
+  cardId.appendChild(div);
 };
-
