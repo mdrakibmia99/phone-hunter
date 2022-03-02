@@ -1,7 +1,7 @@
 // global variable
 const cardId = document.getElementById("card-area");
 const tatalPhoneCalId = document.getElementById("showingTotalPhoneCount");
-
+const errorMessageId=document.getElementById("phone_not_avabile");
 
 
 
@@ -10,6 +10,7 @@ const searchPhone = () => {
   const searchField = document.getElementById("search-input");
   cardId.textContent = "";
   tatalPhoneCalId.textContent = "";
+  errorMessageId.textContent="";
   const searchText = searchField.value;
   searchField.value = "";
   document.getElementById("phoneDetails").textContent = "";
